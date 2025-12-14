@@ -18,3 +18,37 @@ git branch backup/<ブランチ名>-before-rewrite
 git reset --hard <コミットID>
 git push --force-with-lease origin <ブランチ名>
 ポイントは、これは 履歴を書き換えるので --force-with-lease が必要、ってことだけは明記しとくと初心者向けに優しい。
+
+# A5
+リポジトリに関するTipsをもう少し教えて！
+## 運用のコツ（軽め）
+- READMEは「目的 / セットアップ / 動かし方 / よくある詰まり」を最短で辿れる構成にする
+- 変更の単位は小さめにして、コミットメッセージは “何をしたか” が一行で分かるようにする（例：`fix: ...` / `docs: ...`）
+- PRには「変更点 / 影響範囲 / 確認手順（コマンドや画面操作）」を必ず書く
+- 破壊的になりがちな操作（`reset --hard` / `rebase` / `push --force-with-lease`）は、実行前に `git status` と `git branch backup/...` を挟む
+- `.gitignore` は「生成物・秘密・環境依存」を最初に固めておく（`node_modules`、`.env`、`dist` など）
+
+# A6
+「このブランチだけ別フォルダで同時に開きたい」って時、どうする？
+## `git worktree` 小ワザ
+同じリポジトリを別ディレクトリに“もう1個チェックアウト”できるやつ。
+例えば main を触りつつ、別作業のブランチも同時に開きたい時に便利。
+
+例：
+- `git worktree add ../myrepo-feature feature/something`
+- 作業が終わったら `git worktree remove ../myrepo-feature`
+
+# A7
+適当な雑談でもいい？
+## 雑談
+作業中のBGMって何派？
+歌詞ありだと集中できない人もいるけど、私は「慣れてるアルバムを小さめ音量で流す」か「雨音（環境音）」が一番ミスらない気がする。
+
+# A8
+困ったときの “最初に見る” コマンド集、置いとくね
+## まずはここから
+- いま何が起きてる？：`git status`
+- 直近の履歴確認：`git log --oneline --decorate -n 15`
+- 差分確認：`git diff`（ステージ済みは `git diff --staged`）
+- どのブランチ？：`git branch --show-current`
+- 直前の操作を取り消したい：`git reflog`（困ったらここ、だいたい助かる）
